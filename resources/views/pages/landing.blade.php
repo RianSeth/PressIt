@@ -30,10 +30,10 @@
                 <span class="text-pink font-bold leading-tight sm:mb-4">SERVICE</span>
                 <h1 class="font-bold text-5xl leading-tight text-grey sm:mb-16">The best service we provide for you</h1>
             </div>
-            <div class="lg:col-span-8 col-span-12 bg-transparent sm:w-auto w-full flex lg:flex-row flex-col gap-4 items-center overflow-y-scroll scrollbar-hidden py-6 px-3">
+            <div class="service lg:col-span-8 col-span-12 bg-transparent sm:w-auto w-full flex lg:flex-row flex-col gap-4 items-center overflow-y-scroll scrollbar-hidden py-6 px-3">
                 @if ($pakets->count() > 0)
                     @foreach ($pakets as $paket)
-                    <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 drop-shadow-xl-shadow">
+                    <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 drop-shadow-lg-shadow">
                         <h5 class="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">Paket {{ $paket->jenis }}</h5>
                         <div class="flex items-baseline text-gray-900 dark:text-white">
                             <span class="text-3xl font-semibold">Rp</span>
@@ -50,38 +50,9 @@
                             </li>
                         </ul>
                         @auth
-                        <a href="{{ route('book', ['id' => $paket->id]) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">Choose plan</a>
+                        <a href="{{ route('book', ['id' => $paket->id]) }}" class="button-paket text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">Choose plan</a>
                         @else
-                        <button x-on:click="if (showConfirmation()) registerOpen = true" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">Choose plan</button>
-                        <script>
-                            function showConfirmation() {
-                                return confirm("You don't have an account. Create an account?");
-                            }
-                        </script>
-                        @endauth
-                    </div>
-                    @endforeach
-                    @foreach ($pakets as $paket)
-                    <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-                        <h5 class="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">Paket {{ $paket->jenis }}</h5>
-                        <div class="flex items-baseline text-gray-900 dark:text-white">
-                            <span class="text-3xl font-semibold">Rp</span>
-                            <span class="text-5xl font-extrabold tracking-tight">{{ $paket->harga }}</span>
-                            <span class="ml-1 text-xl font-normal text-gray-500 dark:text-gray-400">/{{ $paket->satuan_harga }}</span>
-                        </div>
-                        <ul role="list" class="space-y-5 my-7">
-                            <li class="flex space-x-3 items-center">
-                                <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-                                </svg>
-                                <textarea class="text-base font-normal text-gray-500 dark:text-gray-400 w-full h-40 overflow-y-auto scrollbar-hidden resize-none rounded-lg bg-transparent" disabled>{{ $paket->deskripsi }}
-                                </textarea>
-                            </li>
-                        </ul>
-                        @auth
-                        <a href="{{ route('book', ['id' => $paket->id]) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">Choose plan</a>
-                        @else
-                        <button x-on:click="if (showConfirmation()) registerOpen = true" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">Choose plan</button>
+                        <button x-on:click="if (showConfirmation()) registerOpen = true" class="button-paket text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-200 dark:focus:ring-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-center w-full text-center">Choose plan</button>
                         <script>
                             function showConfirmation() {
                                 return confirm("You don't have an account. Create an account?");
@@ -96,58 +67,62 @@
     </div>
 </section>
 
-<!-- jQuery -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script>
-    // <!-- Scroll Spy -->
-    // Cache selectors
-    var lastId,
-        topMenu = $("#menu-content"),
-        topMenuHeight = topMenu.outerHeight()+175,
-        // All list items
-        menuItems = topMenu.find("a"),
-        // Anchors corresponding to menu items
-        scrollItems = menuItems.map(function(){
-        var item = $($(this).attr("href"));
-        if (item.length) { return item; }
-        });
+@once
+        <script>
+            const navLinks = document.querySelectorAll('nav li[data-section]');
+            const sections = document.querySelectorAll('section');
 
-    // Bind click handler to menu items
-    // so we can get a fancy scroll animation
-    menuItems.click(function(e){
-    var href = $(this).attr("href"),
-        offsetTop = href === "#" ? 0 : $(href).offset().top-topMenuHeight+1;
-    $('html, body').stop().animate({ 
-        scrollTop: offsetTop
-    }, 300);
-    if (!helpMenuDiv.classList.contains("hidden")) {
-            helpMenuDiv.classList.add("hidden");
-        }
-    e.preventDefault();
-    });
+            window.addEventListener('scroll', () => {
+            let currentSection = null;
 
-    // Bind to scroll
-    $(window).scroll(function(){
-    // Get container scroll position
-    var fromTop = $(this).scrollTop()+topMenuHeight;
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 80;
+                const sectionBottom = sectionTop + section.clientHeight;
 
-    // Get id of current scroll item
-    var cur = scrollItems.map(function(){
-        if ($(this).offset().top < fromTop)
-        return this;
-    });
-    // Get the id of the current element
-    cur = cur[cur.length-1];
-    var id = cur && cur.length ? cur[0].id : "";
+                if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                currentSection = section.getAttribute('id');
+                }
+            });
 
-    if (lastId !== id) {
-        lastId = id;
-        // Set/remove active class
-        menuItems
-            .parent().removeClass("font-bold border-yellow-600")
-            .end().filter("[href='#"+id+"']").parent().addClass("font-bold border-yellow-600");
-    }                   
-    });
-</script>
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-section') === currentSection) {
+                link.classList.add('font-bold');
+                link.classList.remove('opacity-50');
+                link.classList.remove('font-normal');
+                } else {
+                link.classList.remove('font-bold');
+                link.classList.add('font-normal');
+                link.classList.add('opacity-50');
+                }
+            });
+            });
+
+            introJs().setOptions({
+                dontShowAgain: true,
+                dontShowAgainCookieDays: 1,
+                showProgress: true,
+                showBullets: false,
+                steps: [{
+                    title: 'Selamat Datang di PressIt',
+                    intro: 'Silahkan mengikuti tour singkat Kami'
+                },{
+                    element: document.querySelector('.service'),
+                    title: 'Service Kami!',
+                    intro: 'Kami menyediakan beberapa service untuk memperhalus dan merapikan Pakaian Anda',
+                    position: 'left'
+                },{
+                    element: document.querySelector('.button-paket'),
+                    intro: 'Ayo pesan layanan kami sekarang!',
+                    position: 'top',
+                },{
+                    title: 'Register atau Login',
+                    intro: 'Tapi jangan lupa buat Akun-Mu dulu di pojok kanan atas!',
+                },{
+                    element: document.querySelector('.button-login'),
+                    intro: 'Disini!'
+                }]
+            }).start();
+        </script>
+    @endonce
 
 @endsection

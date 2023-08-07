@@ -13,6 +13,10 @@
 
     @vite('resources/css/app.css')
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         .scrollbar-hidden::-webkit-scrollbar{
             display: none;
         }
@@ -30,16 +34,38 @@
 
     {{-- apline js --}}
     <script src="//unpkg.com/alpinejs" defer></script>
+
+    {{-- Intro js --}}
+    <link rel="stylesheet" href="https://unpkg.com/intro.js/introjs.css">
+    <script src="https://unpkg.com/intro.js/intro.js"></script>
 </head>
 
-<body x-data="{'loginOpen': false, 'registerOpen': false, 'regisDetail':false}" x-on:keydown.escape="loginOpen=false, registerOpen=false">
+<body x-data="{'loginOpen': false, 'registerOpen': false, 'regisDetail':false}" x-on:keydown.escape="loginOpen=false, registerOpen=false" class="lg:mx-[128px] md:mx-16 mx-4">
     <div id="spin-wrapper" class="w-full h-screen absolute flex items-center justify-center bg-white z-50">
         <ion-icon name="reload-outline" class="w-20 animate-spin"></ion-icon>
     </div>
 
-    <nav class="py-9 px-4 z-50">
+    <nav id="headerNav" class="py-2 px-4 z-50 sticky top-1 bg-slate-400 bg-opacity-50 rounded-full my-1 backdrop-blur-sm transition-all">
         @include('layouts.navigation')
     </nav>
+    <script>
+        const headerNav = document.getElementById('headerNav');
+        let lastScrollTop = 0;
+
+        window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+
+        if (scrollTop > lastScrollTop) {
+            // Scroll down
+            headerNav.style.transform = 'translateY(-100%)';
+        } else {
+            // Scroll up
+            headerNav.style.transform = 'translateY(0)';
+        }
+
+        lastScrollTop = scrollTop;
+        });
+    </script>
 
     <div class="absolute flex justify-center top-0 left-0">
         @include('auth.login')

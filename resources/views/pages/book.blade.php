@@ -31,7 +31,7 @@
                 </svg>
             </button>
         </div>
-        <div class="w-full sticky inset-0 hidden max-h-64 lg:h-auto overflow-x-hidden overflow-y-auto lg:overflow-y-hidden lg:block mt-0 my-2 lg:my-0 border border-gray-400 lg:border-transparent bg-white shadow lg:shadow-none lg:bg-transparent z-20" style="top:6em;" id="menu-content">
+        <div class="sidebar w-full sticky inset-0 hidden max-h-64 lg:h-auto overflow-x-hidden overflow-y-auto lg:overflow-y-hidden lg:block mt-0 my-2 lg:my-0 border border-gray-400 lg:border-transparent bg-white shadow lg:shadow-none lg:bg-transparent z-20" style="top:6em;" id="menu-content">
             <ul class="list-reset py-2 md:py-0">
                 <li class="py-1 md:my-2 hover:bg-yellow-100 lg:hover:bg-transparent border-l-4 border-transparent font-bold border-yellow-600">
                     <a href='#section1' class="block pl-4 align-middle text-gray-700 no-underline hover:text-yellow-600">
@@ -70,10 +70,10 @@
 
         {{-- Data Diri --}}
         <!--Title-->
-        <h2 id='section1' class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Data Anda</h2>
+        <h2 class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Data Anda</h2>
 
         <!--Card-->
-        <div class="p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
+        <div id='section1' class="data-anda section p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
 
             {{-- Nama pelanggan --}}
             <div class="md:flex mb-6">
@@ -127,7 +127,7 @@
         <h2 class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Pilihan Paket Anda</h2>
 
         <!--Card-->
-        <div id='section2' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+        <div id='section2' class="paket-pilih section p-8 mt-6 lg:mt-0 rounded shadow bg-white">
 
             {{-- Jenis Paket --}}
             <div class="md:flex mb-6">
@@ -189,10 +189,10 @@
 
         {{-- Lengkapi Data --}}
         <!--Title-->
-        <h2 id='section3' class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Silahkan Lengkapi Pesanan</h2>
+        <h2 class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Silahkan Lengkapi Pesanan</h2>
 
         <!--Card-->
-        <div class="p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
+        <div id='section3' class="detail-pesan section p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
 
             {{-- Nomor Pemesanan --}}
             <div class="md:flex mb-6">
@@ -208,7 +208,7 @@
             </div>
 
             {{-- Alamat pelanggan --}}
-            <div class="md:flex mb-6">
+            <div class="alamat-anda md:flex mb-6">
                 <div class="md:w-1/3">
                     <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textarea">
                         Alamat Anda
@@ -221,7 +221,7 @@
             </div>
 
             {{-- Tipe Pengambilan --}}
-            <div class="md:flex mb-6">
+            <div class="tipe-pickup md:flex mb-6">
                 <div class="md:w-1/3">
                     <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
                         Tipe Pickup
@@ -238,7 +238,7 @@
             </div>
 
             {{-- Jumlah --}}
-            <div class="md:flex mb-6">
+            <div class="jumlah-pesan md:flex mb-6">
                 <div class="md:w-1/3">
                     <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
                         Jumlah
@@ -255,7 +255,7 @@
             </div>
 
             {{-- Tanggal Mulai Pemesanan --}}
-            <div class="md:flex mb-6">
+            <div class="tanggal-mulai md:flex mb-6">
                 <div x-data="{showBooked : false}" class="md:w-1/3">
                     <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
                         Tanggal Pemesanan
@@ -283,9 +283,10 @@
                             @php
                                 $strtDate = strftime('%d %B %Y', strtotime($booking->tanggal_mulai));
                                 $enDate = strftime('%d %B %Y', strtotime($booking->tanggal_selesai));
+                                $strtDate1 = date('Y-m-d', strtotime($booking->tanggal_mulai));
                                 $tomorrow1 = date('Y-m-d', strtotime('+1 day'));
                             @endphp
-                            @if ($strtDate < strtotime($tomorrow1))
+                            @if ($strtDate1 >= $tomorrow1)
                                 @if ($booking->count() > 0)
                                     <p>Terkumpul: {{ $booking->batas }}/40kg</p>
                                     <p>Durasi   : {{ $strtDate }} - {{ $enDate }}</p>
@@ -319,7 +320,7 @@
             @endonce
 
             {{-- Tanggal Selesai Pemesanan --}}
-            <div class="md:flex mb-6">
+            <div class="tanggal-selesai md:flex mb-6">
                 <div class="md:w-1/3">
                     <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
                         Tanggal Selesai
@@ -333,7 +334,7 @@
             {{-- <div x-text="JSON.stringify(bookingRanges, null, 2)"></div> --}}
             
             {{-- Total Harga --}}
-            <div class="md:flex mb-6">
+            <div class="subtotal md:flex mb-6">
                 <div class="md:w-1/3">
                     <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
                         Total Harga
@@ -352,10 +353,10 @@
 
         {{-- Konfirmasi Data --}}
         <!--Title-->
-        <h2 id='section4' class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Konfirmasi</h2>
+        <h2 class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Konfirmasi</h2>
 
         <!--Card-->
-        <div class="p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
+        <div id='section4' class="konfirmasi-data section p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
             <blockquote class="border-l-4 border-yellow-600 italic my-4 pl-8 md:pl-12">Periksa kembali data Anda dengan tombol "Konfirmasi" dibawah, jika ada kesalahan silahkan kembali dan tekan "Ubah Data Pemesanan"</blockquote>
 
                 <div x-data="{'PemesanModal' : false}" x-on:keydown.escape="PemesanModal=false" class="pt-8">
@@ -582,56 +583,93 @@
         };
     }
 
-    // <!-- Scroll Spy -->
-    // Cache selectors
-    var lastId,
-        topMenu = $("#menu-content"),
-        topMenuHeight = topMenu.outerHeight()+175,
-        // All list items
-        menuItems = topMenu.find("a"),
-        // Anchors corresponding to menu items
-        scrollItems = menuItems.map(function(){
-        var item = $($(this).attr("href"));
-        if (item.length) { return item; }
-        });
+    const sidebarLinks = document.querySelectorAll('.sidebar li');
+    const sections = document.querySelectorAll('.section');
 
-    // Bind click handler to menu items
-    // so we can get a fancy scroll animation
-    menuItems.click(function(e){
-    var href = $(this).attr("href"),
-        offsetTop = href === "#" ? 0 : $(href).offset().top-topMenuHeight+1;
-    $('html, body').stop().animate({ 
-        scrollTop: offsetTop
-    }, 300);
-    if (!helpMenuDiv.classList.contains("hidden")) {
-            helpMenuDiv.classList.add("hidden");
+    window.addEventListener('scroll', () => {
+    let currentSection = null;
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 500;
+        const sectionBottom = sectionTop + section.clientHeight +500;
+
+        if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+        currentSection = section.getAttribute('id');
         }
-    e.preventDefault();
     });
 
-    // Bind to scroll
-    $(window).scroll(function(){
-    // Get container scroll position
-    var fromTop = $(this).scrollTop()+topMenuHeight;
-
-    // Get id of current scroll item
-    var cur = scrollItems.map(function(){
-        if ($(this).offset().top < fromTop)
-        return this;
+    sidebarLinks.forEach(link => {
+        const linkHref = link.querySelector('a').getAttribute('href');
+        if (linkHref === `#${currentSection}`) {
+            link.classList.add('font-bold', 'border-yellow-600');
+        } else {
+            link.classList.remove('font-bold', 'border-yellow-600');
+        }
     });
-    // Get the id of the current element
-    cur = cur[cur.length-1];
-    var id = cur && cur.length ? cur[0].id : "";
-
-    if (lastId !== id) {
-        lastId = id;
-        // Set/remove active class
-        menuItems
-            .parent().removeClass("font-bold border-yellow-600")
-            .end().filter("[href='#"+id+"']").parent().addClass("font-bold border-yellow-600");
-    }                   
     });
 </script>
+
+@once
+    <script>
+        introJs().setOptions({
+            dontShowAgain: true,
+            dontShowAgainCookieDays: 1,
+            showProgress: true,
+            showBullets: false,
+            steps: [{
+                title: 'Ayo pahami setiap Data',
+                intro: 'Silahkan mengikuti tour singkat Kami'
+            },{
+                element: document.querySelector('.data-anda'),
+                intro: 'Bagian mengenai data Anda',
+                position: 'left'
+            },{
+                element: document.querySelector('.paket-pilih'),
+                intro: 'Detail Paket pilihan Anda',
+                position: 'left'
+            },{
+                element: document.querySelector('.detail-pesan'),
+                intro: 'Lengkapi data pemesanan Anda disini',
+                position: 'left'
+            },{
+                element: document.querySelector('.alamat-anda'),
+                title: 'Detail Alamat',
+                intro: 'Lengkapi alamat Anda untuk keperluan antar/jemput jika menggunakan Kurir',
+                position: 'left'
+            },{
+                element: document.querySelector('.tipe-pickup'),
+                title: 'Tipe Pickup',
+                intro: 'Pilih sesuai kebutuhan Anda. *kurir akan ada penambahan biaya',
+                position: 'left'
+            },{
+                element: document.querySelector('.jumlah-pesan'),
+                title: 'Jumlah Pakaian Anda',
+                intro: 'Masukkan banyaknya jumlah yang disetor (biasa/kilogram dan khusus/pakaian)',
+                position: 'left'
+            },{
+                element: document.querySelector('.tanggal-mulai'),
+                title: 'Tanggal Penyetoran',
+                intro: 'Pilih tanggal setor pakaian Anda, dan sesuaikan jumlah yang tersedia pada list available',
+                position: 'left'
+            },{
+                element: document.querySelector('.tanggal-selesai'),
+                title: 'Tanggal Pegembalian',
+                intro: 'Tanggal dikembalikannya pakaian akan otomatis muncul',
+                position: 'left'
+            },{
+                element: document.querySelector('.subtotal'),
+                title: 'Total sementara',
+                intro: 'Harga total sementara (jika memilih kurir maka harga kirim akan dimasukkan terlebih dahulu oleh admin)',
+                position: 'left'
+            },{
+                element: document.querySelector('.konfirmasi-data'),
+                title: 'Silahkan Konfirmasi',
+                intro: 'Jika telah selesai, silahkan konfirmasi lagi lalu kirim',
+                position: 'left'
+            }]
+        }).start();
+    </script>
+@endonce
 </div>
 
 {{-- <div class="h-screen w-full bg-gray-100 p-0 sm:p-12">

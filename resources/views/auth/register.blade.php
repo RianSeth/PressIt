@@ -8,9 +8,9 @@
     x-transition
     >
     <div x-on:click="registerOpen = false" class="fixed left-0 top-0 w-full h-screen bg-black/50"></div>
-    <form action="{{ route('store') }}" method="post" class="w-full min-w-min mx-auto z-50 flex flex-row gap-1 justify-center">
+    <form action="{{ route('store') }}" method="post" class="max-w-max mx-auto z-50 flex flex-row gap-1 justify-center">
         @csrf
-        <div class="w-1/3 bg-white shadow-md border border-gray-200 rounded-lg p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div class="w-96 bg-white shadow-md border border-gray-200 rounded-lg p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div class="space-y-6" >
                 <h3 class="text-xl font-medium text-gray-900 dark:text-white">Register</h3>
 
@@ -46,10 +46,13 @@
                 <button x-on:click="regisDetail = !regisDetail" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Next
                 </button>
+                <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                    Have an account? <button x-on:click="loginOpen = true, registerOpen = false" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</button>
+                </p>
             </div>
         </div>
         
-        <div x-show="regisDetail" class="w-1/3 bg-white shadow-md border border-gray-200 rounded-lg p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div x-show="regisDetail" class="w-96 bg-white shadow-md border border-gray-200 rounded-lg p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div class="space-y-6" >
                 <h3 class="text-xl font-medium text-gray-900 dark:text-white">Your Detail Address</h3>
 
@@ -70,9 +73,6 @@
                 </div>
 
                 <input type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" value="Register">
-                <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                    Have an account? <button x-on:click="loginOpen = true, registerOpen = false" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login</button>
-                </p>
             </div>
         </div>
     </form>

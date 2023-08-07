@@ -338,6 +338,15 @@ class LandingController extends Controller
 
     }
 
+    public function download(Pemesanan $record)
+    {
+        $pemesanans = Pemesanan::findOrFail($record->id);
+        
+        $pembayarans = Pembayaran::where('pemesanan_id', $pemesanans->id)->get();
+
+        return view('pages.booking.receipt', compact('pemesanans', 'pembayarans'));
+    }
+
     /**
      * Remove the specified resource from storage.
      */

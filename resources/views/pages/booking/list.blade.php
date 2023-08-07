@@ -198,12 +198,12 @@
                             @endif
                         </td>
                         <td x-data="{ showPayment: false }" class="px-6 py-4 text-right">
-                            @if ($pmsn->status === 'waiting' )
-                                @if ($pmsn->status != 'cancelled')
+                            @if ($pmsn->status == 'waiting' )
+                                @if ($pmsn->harga_kurir > 0)
                                 <a href="{{ route('bookpay', $pmsn->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                     Payment</a>
                                 @else
-                                    
+                                    -
                                 @endif
                             @else
                                 @if ($pmsn->status != 'cancelled')
@@ -211,7 +211,7 @@
                                     Payment</button>
                                 @include('pages.booking.show')
                                 @else
-                                    
+                                    -
                                 @endif
                             @endif
                         </td>

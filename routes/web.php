@@ -31,6 +31,7 @@ Route::controller(LandingController::class)->group(function() {
     Route::put('/booking/update/{id}', 'update')->name('bookupdate');
     Route::get('/booking/payment/{id}', 'editPay')->name('bookpay');
     Route::put('/booking/paymenting/{id}', 'updatePay')->name('bookpayupdate');
+    Route::get('/{record}/pdf', 'download')->name('pemesanan.invoice');
 });
 
 // Route::get('/admin', 'AdminController@index')->middleware('admin');

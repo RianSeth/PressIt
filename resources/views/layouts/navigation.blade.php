@@ -6,15 +6,15 @@
         </svg>
         <div class="order-2 hidden lg:block" id="menu-content">
             <ul class="flex gap-16">
-                <li class="text-grey font-bold text-sm font-circular">
+                <li data-section="section1" class="text-grey font-bold text-sm font-circular">
                     <a href="/#section1">Home</a>
                 </li>
-                <li class="text-grey font-normal text-sm font-circular opacity-50">
+                <li data-section="section2" class="text-grey font-normal text-sm font-circular opacity-50">
                     <a href="/#section2">Service</a>
                 </li>
             </ul>
         </div>
-        <div class="order-3 hidden sm:block" x-data="{openProfil : false}">
+        <div class="button-login order-3 hidden sm:block relative" x-data="{openProfil : false}">
             @if (Route::has('login'))
                 @auth
                     <button @click="openProfil = !openProfil" class="grow bg-white px-8 py-4 font-bold text-grey rounded-full text-sm shadow-xl">
@@ -28,7 +28,7 @@
                         x-transition:leave="transition ease-in duration-300"
                         x-transition:leave-start="opacity-100 scale-100"
                         x-transition:leave-end="opacity-0 scale-90"
-                        class="bg-white rounded shadow-md mr-7 absolute mt-24 top-0 right-0 w-36 overflow-auto z-30 list-reset scrollbar-hidden"
+                        class="bg-white rounded shadow-md absolute mt-16 top-0 right-0 w-36 overflow-auto z-30 list-reset scrollbar-hidden"
                         >
                         <li>
                             @if (Auth::user()->usertype == 'admin')
