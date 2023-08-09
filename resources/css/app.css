@@ -7,6 +7,14 @@
         font-family: 'Circular STD';
         src: url('/public/fonts/CircularStd-Bold.woff') format('woff');
     }
+
+    .font-outline-1 {
+        -webkit-text-stroke: 1px white;
+      }
+
+    .font-outline-4 {
+        -webkit-text-stroke: 4px black;
+    }
 }
 
 html{

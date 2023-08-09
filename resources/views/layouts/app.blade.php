@@ -30,6 +30,21 @@
         .form-multiselect {
             background-color: #edf2f7;
         }
+
+        .typing::after {
+            border-right: 3px solid black; /* Efek kursor */
+            animation: typing 5s steps(22) infinite, blink-caret 1s infinite step-end;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: black; }
+        }
     </style>
 
     {{-- apline js --}}
@@ -38,14 +53,18 @@
     {{-- Intro js --}}
     <link rel="stylesheet" href="https://unpkg.com/intro.js/introjs.css">
     <script src="https://unpkg.com/intro.js/intro.js"></script>
+
+    {{-- Animate On Scroll --}}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 
-<body x-data="{'loginOpen': false, 'registerOpen': false, 'regisDetail':false}" x-on:keydown.escape="loginOpen=false, registerOpen=false" class="lg:mx-[128px] md:mx-16 mx-4">
+<body x-data="{'loginOpen': false, 'registerOpen': false, 'regisDetail':false}" x-on:keydown.escape="loginOpen=false, registerOpen=false" class="">
     <div id="spin-wrapper" class="w-full h-screen absolute flex items-center justify-center bg-white z-50">
         <ion-icon name="reload-outline" class="w-20 animate-spin"></ion-icon>
     </div>
 
-    <nav id="headerNav" class="py-2 px-4 z-50 sticky top-1 bg-slate-400 bg-opacity-50 rounded-full my-1 backdrop-blur-sm transition-all">
+    <nav id="headerNav" class="lg:mx-[128px] md:mx-16 mx-4 py-2 px-4 z-50 sticky top-1 bg-slate-400 bg-opacity-50 rounded-full my-1 backdrop-blur-sm transition-all">
         @include('layouts.navigation')
     </nav>
     <script>
@@ -72,7 +91,7 @@
         @include('auth.register')
     </div>
 
-    <div class="container flex justify-center mx-auto flex-col">
+    <div class="">
         @yield('body')
     </div>
 
