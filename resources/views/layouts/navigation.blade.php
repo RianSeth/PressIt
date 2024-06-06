@@ -1,7 +1,7 @@
-<div class="container mx-auto" x-data="{navOpen : true}">
-    <div class="flex items-center justify-between">
+<div class="container md:mx-0 mx-auto" x-data="{navOpen : true}">
+    <div class="lg:static flex fixed items-center justify-between lg:w-auto w-screen lg:mx-0 md:mx-0 mx-0 lg:my-0 my-8 z-50">
         <h1 class="text-3xl italic order-1 sm:order-2"><a href="/">PressIt</a></h1>
-        <svg @click="navOpen = !navOpen" class="order-2 sm:order-1 lg:hidden" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg @click="navOpen = !navOpen" class="order-2 sm:order-1 lg:hidden md:ml-16" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M28.38 0H11.62C4.34 0 0 4.34 0 11.62V28.36C0 35.66 4.34 40 11.62 40H28.36C35.64 40 39.98 35.66 39.98 28.38V11.62C40 4.34 35.66 0 28.38 0ZM30 30.5H10C9.18 30.5 8.5 29.82 8.5 29C8.5 28.18 9.18 27.5 10 27.5H30C30.82 27.5 31.5 28.18 31.5 29C31.5 29.82 30.82 30.5 30 30.5ZM30 21.5H10C9.18 21.5 8.5 20.82 8.5 20C8.5 19.18 9.18 18.5 10 18.5H30C30.82 18.5 31.5 19.18 31.5 20C31.5 20.82 30.82 21.5 30 21.5ZM30 12.5H10C9.18 12.5 8.5 11.82 8.5 11C8.5 10.18 9.18 9.5 10 9.5H30C30.82 9.5 31.5 10.18 31.5 11C31.5 11.82 30.82 12.5 30 12.5Z" fill="#5D50C6"/>
         </svg>
         <div class="order-2 hidden lg:block" id="menu-content">
@@ -14,7 +14,7 @@
                 </li>
             </ul>
         </div>
-        <div class="button-login order-3 hidden sm:block relative" x-data="{openProfil : false}">
+        <div class="button-login order-3 hidden sm:block relative md:mr-16 lg:mr-0" x-data="{openProfil : false}">
             @if (Route::has('login'))
                 @auth
                     <button @click="openProfil = !openProfil" class="grow bg-white px-8 py-4 font-bold text-grey rounded-full text-sm shadow-xl">
@@ -36,6 +36,11 @@
                                     Dashboard
                                 </a>
                             @endif
+                        </li>
+                        <li>
+                            <a href="{{ route('akun') }}" class="px-4 py-2 block hover:bg-gray-400 no-underline hover:no-underline">
+                                My Account
+                            </a>
                         </li>
                         <li>
                             <a href="{{ route('booking') }}" class="px-4 py-2 block hover:bg-gray-400 no-underline hover:no-underline">
@@ -72,7 +77,7 @@
         x-transition:leave="transition ease-in duration-300"
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-90"
-        x-data="{open : false}" class="lg:hidden fixed bottom-0 right-0 left-0 p-4 bg-white border">
+        x-data="{open : false}" class="lg:hidden fixed bottom-0 right-0 left-0 p-4 bg-white border w-screen z-50">
         <ul class="flex justify-between md:justify-around">
             <li>
                 <a href="#section1" class="flex justify-center flex-col items-center gap-1">

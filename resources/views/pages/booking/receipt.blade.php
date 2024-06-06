@@ -294,7 +294,7 @@
                     <span>Rp {{ number_format($pemesanans->total_price, 0, ',', '.') }}</span>
                 </div>
                 <div class="flex flex-row flex-wrap justify-between">
-                    <span class="font-medium text-lg print:text-lg">Total</span><span class="text-lg font-medium">Rp {{ number_format($pemesanans->pembayaran->total, 0, ',', '.') }}</span>
+                    <span class="font-medium text-lg print:text-lg">Total</span><span class="text-lg font-medium">Rp {{ number_format($pemesanans->total, 0, ',', '.') }}</span>
                 </div>
                 </div>
             </div>

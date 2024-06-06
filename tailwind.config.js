@@ -35,6 +35,12 @@ export default {
         "xl-shadow" : [
           '0px 41px 89px rgba(0, 0, 0, 0.1)',
           '0px 0px 0px rgba(0, 0, 0, 0.1)'
+        ],
+        "md-shadow" : [
+          '0px 19px 19px rgba(0, 0, 0, 0.09)', 
+          '0px 43px 26px rgba(0, 0, 0, 0.05)', 
+          '0px 77px 31px rgba(0, 0, 0, 0.01)', 
+          '0px 120px 34px rgba(0, 0, 0, 0)'
         ]
       }
     },

@@ -1,6 +1,3 @@
-@extends('layouts.app')
-
-@section('body')
 <div class="flex flex-col justify-center w-full mb-8">
 
     @if(session()->has('success'))
@@ -44,7 +41,7 @@
                 @if ($pemesanans->count() > 0)
                     Perhatian!
                     <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-                        Jangan lupa untuk terus periksa pemesanan Anda, Silahkan lakukan 'Chenga Booking' pada pemesanan yang sedang 'waiting'<br>
+                        Jangan lupa untuk terus periksa pemesanan Anda, Silahkan lakukan 'Chenga Booking' pada pemesanan yang sedang 'waiting' / 'process' / 'pickup' <br>
                         *Lakukan pembayaran, (tidak diproses ketika belum terdapat bukti bayar)<br>
                         *Pilih tipe antar/jemput pakaian anda (akan ada tambahan harga untuk jasa kurir) <br>
                     </p>
@@ -65,7 +62,7 @@
                         SubTotal
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Jadwal|Pemesanan
+                        Mulai - Selesai
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Bukti Pembayaran
@@ -80,6 +77,9 @@
                         Total Akhir
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Pengiriman
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Status
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -91,12 +91,6 @@
                     <th scope="col" class="px-6 py-3">
                         
                     </th>
-                    <th scope="col" class="px-6 py-3">
-                        
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -104,34 +98,33 @@
                     @foreach ($pemesanans as $pmsn)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
                             <th scope="row">
-                                <div class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <a href="/" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ $pmsn->nomor_pemesanan }}
-                                </div>
+                                </a>
                             </th>
                             <td>
-                                <div class="px-6 py-4">
+                                <a href="/" class="px-6 py-4">
                                 {{ $pmsn->paket->jenis }}
-                                </div>
+                                </a>
                             </td>
                             <td>
-                                <div class="px-6 py-4">
+                                <a href="/" class="px-6 py-4">
                                 {{ $pmsn->jumlah }} / {{ $pmsn->paket->satuan_harga }}
-                                </div>
+                                </a>
                             </td>
                             <td>
-                                <div class="px-6 py-4">
+                                <a href="/" class="px-6 py-4">
                                 {{ $pmsn->total_price }}
-                                </div>
+                                </a>
                             </td>
                             <td>
                                 @php
                                     $strtDate = strftime('%d %B %Y', strtotime($pmsn->batas->tanggal_mulai));
                                     $enDate = strftime('%d %B %Y', strtotime($pmsn->batas->tanggal_selesai));
                                 @endphp
-                                <div class="px-6 py-4">
-                                {{ $strtDate }} <br>
-                                - {{ $enDate }}
-                                </div>
+                                <a href="/" class="px-6 py-4">
+                                {{ $strtDate }} - {{ $enDate }}
+                                </a>
                             </td>
                             <td x-data="{ showPreview: false }">
                                 <button x-on:click="showPreview = !showPreview" class="block px-6 py-4">
@@ -152,14 +145,14 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="px-6 py-4">
+                                <a href="/" class="px-6 py-4">
                                     @if ($pmsn->pembayaran !== null && $pmsn->pembayaran->count() > 0)
                                     {{ $pmsn->tipe_pickup }}
                                     @endif
-                                </div>
+                                </a>
                             </td>
                             <td>
-                                <div class="px-6 py-4">
+                                <a href="/" class="px-6 py-4">
                                     @if ($pmsn->pembayaran !== null && $pmsn->pembayaran->count() > 0)
                                     @if ($pmsn->tipe_pickup == 'kurir')
                                     {{ $pmsn->harga_kurir }}
@@ -167,17 +160,30 @@
                                     -
                                     @endif
                                     @endif
-                                </div>
+                                </a>
                             </td>
                             <td>
-                                <div class="px-6 py-4">
+                                <a href="/" class="px-6 py-4">
                                     {{ $pmsn->total }}
-                                </div>
+                                </a>
                             </td>
                             <td>
-                                <div class="px-6 py-4">
+                                <a href="/" class="px-6 py-4">
+                                @if ($pmsn->tipe_pickup == 'kurir')
+                                    @if ($pmsn->pembayaran !== null && $pmsn->pembayaran->count() > 0)
+                                    {{ $pmsn->pembayaran->pengiriman->status }}
+                                    @else
+                                        -
+                                    @endif
+                                @else
+                                    -
+                                @endif
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/" class="px-6 py-4">
                                 {{ $pmsn->status }}
-                                </div>
+                                </a>
                             </td>
                             <td class="px-6 py-4 text-right">
                                 @if ($pmsn->status === 'waiting' || ($pmsn->status === 'pending' || $pmsn->status === 'pickup'))
@@ -196,12 +202,6 @@
                                             Payment</a>
                                         @endif
                                     @endif
-                                @else
-                                    @if ($pmsn->status !== 'cancelled' && isset($pmsn->pembayaran->bukti_pembayaran))
-                                        <button x-on:click="showPayment = !showPayment" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                            Faktur</button>
-                                        @include('pages.booking.show')
-                                    @endif
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-right">
@@ -213,30 +213,6 @@
                                         <button type="submit" class="font-medium text-orange dark:text-orange hover:underline">Cancel</button>
                                     </form>
                                 @endif
-                            </td>
-                            <td x-data="{ showPreview2: false }" >
-                                @php
-                                    $pengembalian = $pmsn->pembayaran->pengembalian ?? null;
-                                @endphp
-                                @if (isset($pengembalian))
-                                    <button x-on:click="showPreview2 = !showPreview2" class="block px-6 py-4 font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                        @if ($pmsn->status === 'cancelled' && $pmsn->pembayaran->bukti_pembayaran != null)
-                                        Refund
-                                        @endif
-                                    </button>
-                                    @if ($pmsn->status === 'cancelled' && $pmsn->pembayaran->bukti_pembayaran != null)
-                                    <div x-show="showPreview2" class="absolute left-0 top-0 w-full h-screen mt-2 flex justify-center items-center" x-show="showPreview2" x-on:click.away="showPreview2 = !showPreview2">
-                                        <div x-on:click="showPreview2 = !showPreview2" class="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center">
-                                            <img src="{{ asset('storage/' . $pengembalian->bukti_pengembalian) }}" alt="Preview Gambar" class="w-2/4 h-2/4 object-contain rounded">
-                                        </div>
-                                    </div>
-                                    @endif
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="https://wa.me/6285349111065?text=Hallo%20admin!%20Pemesanan%20Saya%0A%0ANo.%20{{$pmsn->nomor_pemesanan}}%0ALayanan%20{{$pmsn->paket->jenis}}%0ASubtotal%20Rp.{{$pmsn->total_price}}%0ATanggal%20pemesanan:%20{{$strtDate}}%20hingga%20{{$enDate}}%0APengantaran%20{{$pmsn->tipe_pickup}}%0ATotal%20harga%20Rp.{{$pmsn->total}}%0A%0A%5Btanyakan%20disini%5D" target="_blank" class="font-medium text-green-500 dark:text-green-500 hover:underline">Chat WhatsApp</a>
                             </td>
                         </tr>
                     @endforeach
@@ -277,7 +253,6 @@
                     <td class="px-6 py-3"></td>
                     <td class="px-6 py-3"></td>
                     <td class="px-6 py-3"></td>
-                    <td class="px-6 py-3"></td>
                     <td class="px-6 py-3">{{ $pemesanans->count() }}</td>
                 </tr>
             </tfoot>
@@ -286,4 +261,3 @@
     </div>
 
 </div>
-@endsection

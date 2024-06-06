@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address_user;
 use App\Models\Batas;
 use App\Models\Paket;
 use App\Models\Pembayaran;
@@ -11,11 +12,41 @@ use App\Models\Pengiriman;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelPackageTools\Package;
 
 class LandingController extends Controller
 {
+    public function updatePemesananStatus()
+    {
+        $today = Carbon::today();
+
+        // Mendapatkan semua pemesanan yang batas tanggal mulainya kurang dari hari ini dan belum dibayar
+        $pemesananToCancel = Pemesanan::whereHas('batas', function ($query) use ($today) {
+                                            $query->where('tanggal_mulai', '<', $today);
+                                        })
+                                        ->whereDoesntHave('pembayaran', function ($query) {
+                                            $query->whereNotNull('bukti_pembayaran');
+                                        })
+                                        ->where('status', '==', 'waiting')
+                                        ->get();
+
+        // Loop melalui setiap pemesanan dan update statusnya menjadi 'cancelled'
+        foreach ($pemesananToCancel as $pemesanan) {
+            $batasPemesan = Batas::where('id', $pemesanan->batas_id)->first();
+            $pemesanan->update(['status' => 'cancelled']);
+
+            $kurangBatas = $batasPemesan->batas - $pemesanan->jumlah;
+
+            $batasPemesan->update([
+                'batas' => $kurangBatas,
+            ]);
+        }
+
+        return response()->json(['message' => 'Pemesan yang melewati tanggal dan belum dibayar telah dibatalkan.']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -23,6 +54,123 @@ class LandingController extends Controller
     {
         $pakets = Paket::all();
         return view('pages.landing', compact('pakets'));
+    }
+
+    public function pengguna()
+    {
+        $users = Auth::user();
+        return view('pages.user', compact('users'));
+    }
+
+    public function changeinfo(Request $request)
+    {
+        $user = Auth::user();
+        $address = Address_user::where('users_id', $user->id)->first();
+
+        if ($request->filled('status'))
+        {
+            $request->validate([
+                'status' => 'required'
+            ]);
+
+            if ($request->status == 'approved' || $request->status == 'active') {
+                $user->status = $request->status;
+                $user->save();
+            }
+        }
+
+        if ($request->filled('name')) {
+            // Validasi nomor telepon
+            $request->validate([
+                'name' => 'required|string|max:250'
+            ]);
+    
+            $user->name = $request->name;
+            $user->save();
+        }
+
+        if ($request->email) {
+            // Validasi input email dan password
+            $request->validate([
+                'email' => 'required|email|max:250|unique:users,email',
+                'passwordConfirm' => 'required'
+            ]);
+
+            if (Hash::check($request->password, $user->password)) {
+                // Perbarui email
+                $user->email = $request->email;
+                $user->save();
+    
+                // Regenerasi sesi
+                $request->session()->regenerate();
+    
+                return redirect()->route('akun')
+                    ->with('success', 'You have successfully changed your email!');
+            }
+    
+            return back()->withErrors([
+                'passwordConfirm' => 'Your provided credentials do not match in our records.',
+            ])->onlyInput('passwordConfirm');
+        }
+
+        if ($request->password) {
+            // Validasi input email dan password
+            $request->validate([
+                'password' => 'required|min:8|confirmed',
+                'emailConfirm' => 'required|email|max:250'
+            ]);
+
+            if ($request->emailConfirm === $user->email) {
+                // Perbarui email
+                $user->password = Hash::make($request->password);
+                $user->save();
+    
+                // Regenerasi sesi
+                $request->session()->regenerate();
+    
+                return redirect()->route('akun')
+                    ->with('success', 'You have successfully changed your email!');
+            }
+    
+            return back()->withErrors([
+                'emailConfirm' => 'Your provided credentials do not match in our records.',
+            ])->onlyInput('emailConfirm');
+        }
+
+        if ($request->filled('telp')) {
+            // Validasi nomor telepon
+            $request->validate([
+                'telp' => 'required|numeric|digits_between:1,13'
+            ]);
+    
+            // Pastikan entitas address ditemukan sebelum menyimpan perubahan
+            if ($address) {
+                $address->telp = $request->telp;
+                $address->save();
+    
+                return redirect()->route('akun')
+                    ->with('success', 'You have successfully changed your telephone!');
+            }
+        }
+    
+        if ($request->filled('address')) {
+            // Validasi alamat
+            $request->validate([
+                'address' => 'required'
+            ]);
+    
+            // Pastikan entitas address ditemukan sebelum menyimpan perubahan
+            if ($address) {
+                $address->address = $request->address;
+                $address->save();
+    
+                return redirect()->route('akun')
+                    ->with('success', 'You have successfully changed your address!');
+            }
+        }
+    
+        // Jika tidak ada perubahan yang disimpan, kembalikan dengan pesan error
+        return back()->withErrors(['error' => 'No changes were made.'])->withInput();
     }
 
     /**
@@ -115,6 +263,7 @@ class LandingController extends Controller
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_selesai' => $request->tanggal_selesai,
             'batas_id' => $batas->id,
+            'total' => $request->total_harga,
         ]);
 
         $pembayarans = Pembayaran::create([
@@ -148,6 +297,9 @@ class LandingController extends Controller
         $pemesanans = Pemesanan::findOrFail($id);
         $batasPemesan = Batas::where('id', $pemesanans->batas_id)->first();
 
+        if ($pemesanans->status != 'waiting') {
+            return back();
+        }
 
         // Perform the cancellation logic (change status to 'cancelled')
         $pemesanans->update([
@@ -241,6 +393,10 @@ class LandingController extends Controller
         $batasPemesan = Batas::where('id', $pemesanans->batas_id)->first();
         $batas = Batas::where('tanggal_mulai', $request->tanggal_mulai)->first();
 
+        if ($pemesanans->status != 'waiting') {
+            return back();
+        }
+
         if ($batas) {
             if ($pemesanans->batas_id == $batas->id && $batas->tanggal_mulai == $request->tanggal_mulai) {
                 $jumlahBatas = ($batas->batas - $pemesanans->jumlah) + $request->jumlah;
@@ -304,6 +460,10 @@ class LandingController extends Controller
         $pemesanans = Pemesanan::findOrFail($id);
         $pembayarans = Pembayaran::where('pemesanan_id', $pemesanans->id);
 
+        if ($pemesanans->status != 'waiting'){
+            return back();
+        }
+
         if ($request->hasFile('bukti_pembayaran')) {
 
             $bukti = $request->file('bukti_pembayaran');
@@ -316,20 +476,17 @@ class LandingController extends Controller
             $pemesanans->update([
                 'address' => $request->address,
                 'tipe_pickup' => $request->tipe_pickup,
+                'total' => $request->total,
             ]);
 
             $pembayarans->update([
                 'bukti_pembayaran' => $bukti->hashName(),
-                'total' => $request->total,
             ]);
 
         } else {
             $pemesanans->update([
                 'address' => $request->address,
                 'tipe_pickup' => $request->tipe_pickup,
-            ]);
-
-            $pembayarans->update([
                 'total' => $request->total,
             ]);
         }

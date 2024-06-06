@@ -61,10 +61,6 @@ class PackageResource extends Resource
                             ->numeric()
                             ->required()
                             ->label('Price'),
-                        Forms\Components\TextInput::make('jumlah')
-                            ->numeric()
-                            ->required()
-                            ->label('Jumlah'),
                         Forms\Components\TextInput::make('satuan_harga')
                             ->required()
                             ->label('Satuan Harga'),
@@ -119,8 +115,16 @@ class PackageResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->disabled(function($record) {
+                        $statuses = $record->pemesanan()->pluck('status')->toArray();
+                        return (in_array('waiting', $statuses) || in_array('process', $statuses) || in_array('pickup', $statuses));
+                    }),
+                Tables\Actions\DeleteAction::make()
+                    ->disabled(function($record) {
+                        $statuses = $record->pemesanan()->pluck('status')->toArray();
+                        return (in_array('waiting', $statuses) || in_array('process', $statuses) || in_array('pickup', $statuses));
+                    }),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])

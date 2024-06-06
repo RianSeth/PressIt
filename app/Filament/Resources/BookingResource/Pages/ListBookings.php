@@ -5,6 +5,7 @@ namespace App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Livewire\Livewire;
 
 class ListBookings extends ListRecords
 {
@@ -13,7 +14,9 @@ class ListBookings extends ListRecords
     protected function getActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->url(route('createcust'))
+            ->openUrlInNewTab(),
         ];
     }
 }

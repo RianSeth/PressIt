@@ -16,19 +16,22 @@ class Pembayaran extends Model
         'id',
         'pemesanan_id',
         'bukti_pembayaran',
-        'tipe_pengambilan',
-        'total',
         'tanggal_pembayaran',
         'waktu_pembayaran',
     ];
 
     public function pemesanan()
     {
-        return $this->belongsTo(Pemesanan::class);
+        return $this->belongsTo(Pemesanan::class, 'pemesanan_id', 'id');
     }
 
     public function pengiriman()
     {
         return $this->hasOne(Pengiriman::class);
+    }
+
+    public function pengembalian()
+    {
+        return $this->hasOne(Pengembalian::class);
     }
 }

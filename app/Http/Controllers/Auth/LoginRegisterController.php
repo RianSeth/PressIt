@@ -41,9 +41,9 @@ class LoginRegisterController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:250',
-            'email' => 'required|email|max:250|unique:users',
+            'email' => 'required|email|max:250|unique:users,email',
             'password' => 'required|min:8|confirmed',
-            'telp' => 'required|numeric',
+            'telp' => 'required|numeric|digits_between:1,13',
             'address' => 'required'
         ]);
 

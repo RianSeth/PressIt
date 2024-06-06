@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
 use Filament\Resources\Form;
 use Filament\Resources\Pages\CreateRecord;
@@ -70,15 +71,18 @@ class AdminResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
+                    ->unique()
                     ->placeholder('Enter your email')
                     ->label('Email'),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->required(fn (Page $livewire) => ($livewire instanceof CreateRecord))
+                    ->confirmed()
+                    ->rules(['required', 'min:8'])
+                    ->required()
                     ->placeholder('Create a password')
                     ->label('Password'),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->password(),
                 Forms\Components\TextInput::make('usertype')
                     ->label('User-type')
                     ->disabled()
@@ -89,8 +93,9 @@ class AdminResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('telp')
                             ->numeric()
-                            ->maxLength(13)
                             ->required()
+                            ->unique()
+                            ->maxLength(13)
                             ->placeholder('Your phone number')
                             ->label('Telephone'),
                         Forms\Components\Textarea::make('address')

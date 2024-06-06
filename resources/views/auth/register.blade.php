@@ -58,7 +58,7 @@
 
                 <div>
                     <label for="telp" class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">Telephone</label>
-                    <input type="number" name="telp" id="telp" class="@error('telp') is-invalid @enderror bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="08xxxxxxxxxx" required value="{{ old('telp') }}">
+                    <input type="number" name="telp" id="telp" class="@error('telp') is-invalid @enderror bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="08xxxxxxxxxx" required value="{{ old('telp') }}" maxlength="13" oninput="if(this.value.length > 13) this.value = this.value.slice(0, 13);"">
                     @if ($errors->has('telp'))
                         <span class="text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300">{{ $errors->first('telp') }}</span>
                     @endif

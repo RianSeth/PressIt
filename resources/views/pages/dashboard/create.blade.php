@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('pages.dashboard.navi')
 
-@section('body')
+@section('body1')
 
 <div>
 
@@ -13,11 +13,6 @@
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> --}}
     </head>
-    
-<!--Back link -->
-<div class="w-full lg:w-4/5 lg:ml-auto text-base md:text-sm text-gray-600 px-2 mb-8">
-    <span class="text-base text-yellow-600 font-bold">&lt;</span> <a href="{{ route('dashboard') }}" class="text-base md:text-sm text-yellow-600 font-bold no-underline hover:underline">Back Home</a>
-</div>
 
 <!--Container-->
 <div class="container w-full flex flex-wrap mx-auto px-2 pt-8 lg:pt-1 mt-16">
@@ -357,7 +352,7 @@
 
         <!--Card-->
         <div id='section4' class="konfirmasi-data section p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
-            <blockquote class="border-l-4 border-yellow-600 italic my-4 pl-8 md:pl-12">Periksa kembali data Anda dengan tombol "Konfirmasi" dibawah, jika ada kesalahan silahkan kembali dan tekan "Ubah Data Pemesanan"</blockquote>
+            <blockquote class="border-l-4 border-yellow-600 italic my-4 pl-8 md:pl-12">Periksa kembali data Pelanggan dengan tombol "Konfirmasi" dibawah, jika ada kesalahan silahkan kembali dan tekan "Ubah Data Pemesanan"</blockquote>
 
                 <div x-data="{'PemesanModal' : false}" x-on:keydown.escape="PemesanModal=false" class="pt-8">
 
@@ -371,17 +366,12 @@
                         </a>
                     </button>
 
-                    @include('pages.booking.confirm')
+                    @include('pages.dashboard.confirm')
 
                 </div>
         </div>
 
     </section>
-
-    <!--Back link -->
-    <div class="w-full lg:w-4/5 lg:ml-auto text-base md:text-sm text-gray-600 px-4 py-24 mb-12">
-        <span class="text-base text-yellow-600 font-bold">&lt;</span> <a href="{{ route('dashboard') }}" class="text-base md:text-sm text-yellow-600 font-bold no-underline hover:underline">Back Home</a>
-    </div>
 
 </div>
 

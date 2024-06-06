@@ -12,7 +12,7 @@ x-transition
 <div id="spin-wrapper" class="w-screen h-screen absolute bg-white z-50"></div>
     <div class="fixed flex justify-center items-center w-full h-full bg-black/50">
 
-        <form action="{{ route('bookstore') }}" method="post" enctype="multipart/form-data" class="fixed overflow-auto h-5/6 w-3/4 p-8 leading-normal rounded shadow bg-white"> {{-- route(booking.store) --}}
+        <form action="{{ route('createstore') }}" method="post" enctype="multipart/form-data" class="fixed overflow-auto h-5/6 w-3/4 p-8 leading-normal rounded shadow bg-white"> {{-- route(booking.store) --}}
             @csrf
 
             <div>

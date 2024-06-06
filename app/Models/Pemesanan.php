@@ -24,7 +24,25 @@ class Pemesanan extends Model
         'harga_kurir',
         'status',
         'batas_id',
+        'total',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            // Menghitung total_price
+            $model->total_price = $model->jumlah * $model->paket->harga;
+
+            //Menghitung total akhir
+            if ($model->tipe_pickup == 'kurir') {
+                $model->total = $model->total_price + $model->harga_kurir;
+            } else {
+                $model->total = $model->total_price;
+            }
+        });
+    }
 
     public function user()
     {

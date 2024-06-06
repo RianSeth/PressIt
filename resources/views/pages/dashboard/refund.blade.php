@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('pages.dashboard.navi')
 
-@section('body')
+@section('body1')
 
 <div>
     <div>
@@ -14,11 +14,6 @@
             <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
             <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> --}}
         </head>
-        
-        <!--Back link -->
-        <div class="w-full lg:w-4/5 lg:ml-auto text-base md:text-sm text-gray-600 px-2 mb-8">
-        <span class="text-base text-yellow-600 font-bold">&lt;</span> <a href="{{ route('booking') }}" class="text-base md:text-sm text-yellow-600 font-bold no-underline hover:underline">Back Home</a>
-    </div>
     
     <!--Container-->
     <div class="container w-full flex flex-wrap mx-auto px-2 pt-8 lg:pt-1 mt-16">
@@ -36,7 +31,7 @@
                 <ul class="list-reset py-2 md:py-0">
                     <li class="py-1 md:my-2 hover:bg-yellow-100 lg:hover:bg-transparent border-l-4 border-transparent font-bold border-yellow-600">
                         <a href='#section1' class="block pl-4 align-middle text-gray-700 no-underline hover:text-yellow-600">
-                            <span class="pb-1 md:pb-0 text-sm">Pembayaran</span>
+                            <span class="pb-1 md:pb-0 text-sm">Pengembalian Uang</span>
                         </a>
                     </li>
                 </ul>
@@ -45,13 +40,13 @@
     
         <!--Section container-->
         <section x-data="calc()" x-effect="setEndDate()" class="w-full lg:w-4/5">
-            <form onsubmit="return confirm('Sudah Yakin dengan Pembayaran yang Dimasukkan?');" action="{{ route('bookpayupdate', $pemesanans->id) }}" method="POST" enctype="multipart/form-data">
+            <form onsubmit="return confirm('Sudah Yakin dengan Pengembalian uang yang Dimasukkan?');" action="{{ route('refundpay', $pembayarans->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
                 <!--Title-->
                 <h1 class="flex items-center font-sans font-bold break-normal text-gray-700 px-2 text-xl mt-12 lg:mt-0 md:text-2xl">
-                    Perhatikan Pembayaran Anda
+                    Perhatikan Pengembalian Uang Anda
                 </h1>
 
                 <!--divider-->
@@ -59,43 +54,47 @@
 
                 {{-- Pembayaran --}}
                 <!--Title-->
-                <h2 id='section1' class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Pembayaran Anda</h2>
+                <h2 id='section1' class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Pengembalian Uang</h2>
         
                 <!--Card-->
                 <div class="p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
-        
-                    {{-- Alamat pelanggan --}}
-                    <div class="md:flex mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textarea">
-                                Alamat Anda
-                            </label>
-                        </div>
-                        <div class="md:w-2/3">
-                            <textarea name="address" class="form-textarea block w-full focus:bg-white" id="alamat my-textarea" rows="8" required>{{ $pemesanans->address }}</textarea>
-                            <p class="py-2 text-sm text-gray-600">*perhatikan alamat anda</p>
-                        </div>
-                    </div>
 
-                    {{-- Tipe Pengambilan --}}
+                    {{-- Nomor Pemesanan --}}
                     <div class="md:flex mb-6">
                         <div class="md:w-1/3">
                             <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
-                                Tipe Pickup
+                                Nomor Pemesanan
+                            </label>
+                        </div>
+                        <div class="md:w-2/3">
+                            <input class="form-input block w-full focus:bg-white" id="my-textfield" type="text" value="{{ $pemesanans->nomor_pemesanan }}" readonly >    
+                        </div>
+                    </div>
+
+                    {{-- Nama Pelanggan --}}
+                    <div class="md:flex mb-6">
+                        <div class="md:w-1/3">
+                            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
+                                Nama Pelanggan
+                            </label>
+                        </div>
+                        <div class="md:w-2/3">
+                            <input class="form-input block w-full focus:bg-white" id="my-textfield" type="text" value="{{ $pemesanans->user->name }}" readonly >    
+                        </div>
+                    </div>
+
+                    {{-- Nomor Telephone --}}
+                    <div class="md:flex mb-6">
+                        <div class="md:w-1/3">
+                            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
+                                Nomor Telephone
                             </label>
                         </div>
                         <div class="md:w-2/3">
                             @php
-                                $antar = "kurir";
-                                $ambil = "mandiri";
+                                $address_user = $pemesanans->user->address_user;
                             @endphp
-                            <input type="text" name="tipe_pickup" class="form-input block w-full focus:bg-white" id="my-textfield" value="{{ $pemesanans->tipe_pickup }}" readonly>
-                            {{-- <select name="tipe_pickup" class="form-input block w-full focus:bg-white" id="my-textfield" readonly>
-                                <option value="" hidden>--Pilih--</option>
-                                <option value="kurir" {{ $pemesanans->tipe_pickup == $antar ? 'selected' : '' }} >Sewa Kurir</option>
-                                <option value="mandiri" {{ $pemesanans->tipe_pickup == $ambil ? 'selected' : '' }} >Ambil Mandiri</option>
-                            </select> --}}
-                            <p class="py-2 text-sm text-gray-600">*bisa diambil sendiri atau pakai "kurir" (akan ada biaya tambahan)</p>
+                            <input class="form-input block w-full focus:bg-white" id="my-textfield" type="number" value="{{ $address_user->telp }}" readonly >    
                         </div>
                     </div>
 
@@ -112,77 +111,6 @@
                         </div>
                     </div>
 
-                    @if ($pemesanans->tipe_pickup === 'kurir')
-                        @if ($pemesanans->harga_kurir > 0)
-                            {{-- QR Code pembayaran --}}
-                            <div class="md:flex mb-6">
-                                <div class="md:w-1/3">
-                                    <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
-                                        Pembayaran
-                                    </label>
-                                </div>
-                                <div x-data="{ showQRCode: false }" class="md:w-2/3">
-                                    <p @click="showQRCode = !showQRCode" class="form-input block w-full focus:bg-white cursor-pointer" id="my-textfield">Tekan menampilkan QR Code</p>
-                                    <p class="py-2 text-sm text-gray-600">Jangan lupa untuk selalu Screenshoot bukti bahwa Anda sudah MEMBAYAR!</p>
-                                    <div class="absolute left-0 top-0 w-full h-screen mt-2 flex justify-center items-center" x-show="showQRCode" x-on:click.away="showQRCode = !showQRCode">
-                                        <div x-on:click="showQRCode = !showQRCode" class="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center flex-col">
-                                            <img src="{{ asset('storage/qris.png') }}" alt="Preview Gambar" class="w-3/4 h-3/4 object-contain rounded">
-                                            <p class="py-2 text-sm text-black">Jangan lupa untuk selalu Screenshoot bukti bahwa Anda sudah MEMBAYAR!</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {{-- Bukti Pembayaran --}}
-                            <div class="md:flex mb-6">
-                                <div class="md:w-1/3">
-                                    <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
-                                        Bukti Pembayaran
-                                    </label>
-                                </div>
-                                <div x-data="{ imagePreview: null, showPreview: false }" class="md:w-2/3">
-                                    <input name="bukti_pembayaran" class="form-input block w-full focus:bg-white" id="my-textfield" type="file" x-on:change="handleImagePreview($event)" {{ $pemesanans->status != 'waiting' ? 'disabled' : '' }}>
-                                    <p class="py-2 text-sm text-gray-600">*berikan bukti cukup berupa format .jpg|.jpeg|.png</p>
-                                    @if (isset($pemesanans->pembayaran->bukti_pembayaran))
-                                    <img @click="showPreview = !showPreview" x-bind:src="imagePreview" src="{{ asset('storage/'.$pemesanans->pembayaran->bukti_pembayaran) }}" alt="Preview Gambar" class="w-32 h-32 object-cover rounded">
-                                    <div class="absolute left-0 top-0 w-full h-screen mt-2 flex justify-center items-center" x-show="showPreview" x-on:click.away="showPreview = !showPreview">
-                                        <div x-on:click="showPreview = !showPreview" class="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center">
-                                            <img x-bind:src="imagePreview" src="{{ asset('storage/'.$pemesanans->pembayaran->bukti_pembayaran) }}" alt="Preview Gambar" class="w-2/4 h-2/4 object-contain rounded">
-                                        </div>
-                                    </div>
-                                    @else
-                                    <img @click="showPreview = !showPreview" x-bind:src="imagePreview" alt="Preview Gambar" class="w-32 h-32 object-cover rounded">
-                                    <div class="absolute left-0 top-0 w-full h-screen mt-2 flex justify-center items-center" x-show="showPreview" x-on:click.away="showPreview = !showPreview">
-                                        <div x-on:click="showPreview = !showPreview" class="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center">
-                                            <img x-bind:src="imagePreview" alt="Preview Gambar" class="w-2/4 h-2/4 object-contain rounded">
-                                        </div>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        @else
-                        <p class="py-2 text-sm text-gray-600">Tunggu Admin sedang menyesuaikan harga kurir untuk Anda</p>
-                        @endif
-                    @else
-                    {{-- QR Code pembayaran --}}
-                    <div class="md:flex mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
-                                Pembayaran
-                            </label>
-                        </div>
-                        <div x-data="{ showQRCode: false }" class="md:w-2/3">
-                            <p @click="showQRCode = !showQRCode" class="form-input block w-full focus:bg-white cursor-pointer" id="my-textfield">Tekan menampilkan QR Code</p>
-                            <p class="py-2 text-sm text-gray-600">Jangan lupa untuk selalu Screenshoot bukti bahwa Anda sudah MEMBAYAR!</p>
-                            <div class="absolute left-0 top-0 w-full h-screen mt-2 flex justify-center items-center" x-show="showQRCode" x-on:click.away="showQRCode = !showQRCode">
-                                <div x-on:click="showQRCode = !showQRCode" class="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center flex-col">
-                                    <img src="{{ asset('storage/qris.png') }}" alt="Preview Gambar" class="w-3/4 h-3/4 object-contain rounded">
-                                    <p class="py-2 text-sm text-black">Jangan lupa untuk selalu Screenshoot bukti bahwa Anda sudah MEMBAYAR!</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     {{-- Bukti Pembayaran --}}
                     <div class="md:flex mb-6">
                         <div class="md:w-1/3">
@@ -190,14 +118,33 @@
                                 Bukti Pembayaran
                             </label>
                         </div>
+                        <div x-data="{ showQRCode: false }" class="md:w-2/3">
+                            <img @click="showQRCode = !showQRCode" src="{{ asset('storage/'.$pembayarans->bukti_pembayaran) }}" alt="Preview Gambar" class="w-3/4 h-3/4 object-contain rounded">
+                            <p class="py-2 text-sm text-gray-600">*Cek lagi pada bukti pembayaran pelangan!</p>
+                            <div class="absolute left-0 top-0 w-full h-screen mt-2 flex justify-center items-center" x-show="showQRCode" x-on:click.away="showQRCode = !showQRCode">
+                                <div x-on:click="showQRCode = !showQRCode" class="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center flex-col">
+                                    <img src="{{ asset('storage/'.$pembayarans->bukti_pembayaran) }}" alt="Preview Gambar" class="w-3/4 h-3/4 object-contain rounded">
+                                    <p class="py-2 text-sm text-black">*Cek lagi pada bukti pembayaran pelangan!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Bukti Pengembalian --}}
+                    <div class="md:flex mb-6">
+                        <div class="md:w-1/3">
+                            <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
+                                Bukti Pengembalian
+                            </label>
+                        </div>
                         <div x-data="{ imagePreview: null, showPreview: false }" class="md:w-2/3">
-                            <input name="bukti_pembayaran" class="form-input block w-full focus:bg-white" id="my-textfield" type="file" x-on:change="handleImagePreview($event)" {{ $pemesanans->status != 'waiting' ? 'disabled' : '' }}>
+                            <input name="bukti_pengembalian" class="form-input block w-full focus:bg-white" id="my-textfield" type="file" x-on:change="handleImagePreview($event)">
                             <p class="py-2 text-sm text-gray-600">*berikan bukti cukup berupa format .jpg|.jpeg|.png</p>
-                            @if (isset($pemesanans->pembayaran->bukti_pembayaran))
-                            <img @click="showPreview = !showPreview" x-bind:src="imagePreview" src="{{ asset('storage/'.$pemesanans->pembayaran->bukti_pembayaran) }}" alt="Preview Gambar" class="w-32 h-32 object-cover rounded">
+                            @if (isset($pembayarans->pengembalian->bukti_pengembalian))
+                            <img @click="showPreview = !showPreview" x-bind:src="imagePreview" src="{{ asset('storage/'.$pembayarans->pengembalian->bukti_pengembalian) }}" alt="Preview Gambar" class="w-32 h-32 object-cover rounded">
                             <div class="absolute left-0 top-0 w-full h-screen mt-2 flex justify-center items-center" x-show="showPreview" x-on:click.away="showPreview = !showPreview">
                                 <div x-on:click="showPreview = !showPreview" class="fixed left-0 top-0 w-full h-screen bg-black/50 flex justify-center items-center">
-                                    <img x-bind:src="imagePreview" src="{{ asset('storage/'.$pemesanans->pembayaran->bukti_pembayaran) }}" alt="Preview Gambar" class="w-2/4 h-2/4 object-contain rounded">
+                                    <img x-bind:src="imagePreview" src="{{ asset('storage/'.$pembayarans->pengembalian->bukti_pengembalian) }}" alt="Preview Gambar" class="w-2/4 h-2/4 object-contain rounded">
                                 </div>
                             </div>
                             @else
@@ -210,7 +157,6 @@
                             @endif
                         </div>
                     </div>
-                    @endif
         
                 </div>
                 <!--/Card-->
@@ -229,7 +175,7 @@
         
                     <div x-data="{'PemesanModal' : false}" x-on:keydown.escape="PemesanModal=false" class="pt-8">
 
-                        <button type="submit" class="shadow bg-yellow-700 hover:bg-yellow-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mr-4" type="button" {{ $pemesanans->status != 'waiting' ? 'disabled' : '' }}>
+                        <button type="submit" class="shadow bg-yellow-700 hover:bg-yellow-500 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mr-4" type="button">
                             Kirim
                         </button>
 
@@ -245,11 +191,6 @@
             </form>
     
         </section>
-    
-        <!--Back link -->
-        <div class="w-full lg:w-4/5 lg:ml-auto text-base md:text-sm text-gray-600 px-4 py-24 mb-12">
-            <span class="text-base text-yellow-600 font-bold">&lt;</span> <a href="{{ route('booking') }}" class="text-base md:text-sm text-yellow-600 font-bold no-underline hover:underline">Back Home</a>
-        </div>
     
     </div>
 </div>

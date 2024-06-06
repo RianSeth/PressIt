@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('pages.dashboard.navi')
 
-@section('body')
+@section('body1')
 
 <div>
 
@@ -16,7 +16,7 @@
     
 <!--Back link -->
 <div class="w-full lg:w-4/5 lg:ml-auto text-base md:text-sm text-gray-600 px-2 mb-8">
-    <span class="text-base text-yellow-600 font-bold">&lt;</span> <a href="{{ route('booking') }}" class="text-base md:text-sm text-yellow-600 font-bold no-underline hover:underline">Back Home</a>
+    <span class="text-base text-yellow-600 font-bold">&lt;</span> <a href="{{ route('close-tab') }}" class="text-base md:text-sm text-yellow-600 font-bold no-underline hover:underline">Back Home</a>
 </div>
 
 <!--Container-->
@@ -44,12 +44,12 @@
 
     <!--Section container-->
     <section x-data="calc()" x-effect="setEndDate()" class="w-full lg:w-4/5">
-        <form onsubmit="return confirm('Sudah Yakin dengan Data yang Dimasukkan?');" action="{{ route('bookupdate', $pemesanans->id) }}" method="POST" enctype="multipart/form-data">
+        <form onsubmit="return confirm('Sudah Yakin dengan Data yang Dimasukkan?');" action="{{ route('update', $pemesanans->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <!--Title-->
         <h1 class="flex items-center font-sans font-bold break-normal text-gray-700 px-2 text-xl mt-12 lg:mt-0 md:text-2xl">
-            Sesuaikan Pemesanan Anda
+            Sesuaikan Pemesanan Pelanggan
         </h1>
 
         <!--divider-->
@@ -57,7 +57,7 @@
 
         {{-- Data Pemesanan --}}
         <!--Title-->
-        <h2 id='section1' class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Pemesanan Anda</h2>
+        <h2 id='section1' class="font-sans font-bold break-normal text-gray-700 px-2 pb-8 text-xl">Pemesanan Pelanggan</h2>
 
         <!--Card-->
         <div class="p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
@@ -71,7 +71,7 @@
                 </div>
                 <div class="md:w-2/3">
                     <input class="form-input block w-full focus:bg-white" id="my-textfield" type="text" value="{{ $pemesanans->nomor_pemesanan }}" required readonly>
-                    <p class="py-2 text-sm text-gray-600">*nomor pemesanan anda</p>
+                    <p class="py-2 text-sm text-gray-600">*nomor pemesanan pelanggan</p>
                 </div>
             </div>
 
@@ -79,12 +79,12 @@
             <div class="md:flex mb-6">
                 <div class="md:w-1/3">
                     <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
-                        Nama Anda
+                        Nama Pelanggan
                     </label>
                 </div>
                 <div class="md:w-2/3">
                     <input class="form-input block w-full focus:bg-white" id="my-textfield" type="text" value="{{ $users->name }}" readonly>
-                    <p class="py-2 text-sm text-gray-600">*nama anda</p>
+                    <p class="py-2 text-sm text-gray-600">*nama pelanggan</p>
                 </div>
             </div>
 
@@ -92,12 +92,12 @@
             <div class="md:flex mb-6">
                 <div class="md:w-1/3">
                     <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textfield">
-                        Telephone Anda
+                        Telephone Pelanggan
                     </label>
                 </div>
                 <div class="md:w-2/3">
                     <input class="form-input block w-full focus:bg-white" id="my-textfield" type="text" value="{{ $users->address_user->telp }}" readonly>
-                    <p class="py-2 text-sm text-gray-600">*konfirmasi nomor anda, jika ada kesalahan silahkan ke profil</p>
+                    <p class="py-2 text-sm text-gray-600">*konfirmasi nomor pelanggan</p>
                 </div>
             </div>
 
@@ -110,7 +110,7 @@
                 </div>
                 <div class="md:w-2/3">
                     <input class="form-input block w-full focus:bg-white" id="my-textfield" type="text" value="{{ $pemesanans->paket->jenis }}" readonly>
-                    <p class="py-2 text-sm text-gray-600">*paket pilihan anda</p>
+                    <p class="py-2 text-sm text-gray-600">*paket pilihan pelanggan</p>
                 </div>
             </div>
 
@@ -118,12 +118,12 @@
             <div class="md:flex mb-6">
                 <div class="md:w-1/3">
                     <label class="block text-gray-600 font-bold md:text-left mb-3 md:mb-0 pr-4" for="my-textarea">
-                        Alamat Anda
+                        Alamat Pelanggan
                     </label>
                 </div>
                 <div class="md:w-2/3">
                     <textarea name="address" class="form-textarea block w-full focus:bg-white" id="alamat my-textarea" rows="8" required x-model="address1" {{ $pemesanans->status != 'waiting' ? 'readonly' : '' }}>{{ $pemesanans->address }}</textarea>
-                    <p class="py-2 text-sm text-gray-600">*perhatikan alamat anda</p>
+                    <p class="py-2 text-sm text-gray-600">*perhatikan alamat pelanggan</p>
                 </div>
             </div>
 
@@ -212,7 +212,7 @@
                 </div>
                 <div class="md:w-2/3">
                     <input name="tanggal_mulai" class="date startDate form-input block w-full focus:bg-white" id="my-textfield" type="text" placeholder="Masukkan tanggal mulai" required x-model="startDate" x-bind:value="startDate" @input="setEndDate" {{ $pemesanans->status != 'waiting' ? 'readonly' : '' }}>
-                    <p class="py-2 text-sm text-gray-600">*tanggal anda ingin mengirim baju</p>
+                    <p class="py-2 text-sm text-gray-600">*tanggal pelanggan ingin mengirim baju</p>
                     <p class="py-2 text-sm font-red" x-text="message"></p>
                 </div>
             </div>
@@ -239,7 +239,7 @@
                     </label>
                 </div>
                 <div class="md:w-2/3">
-                    <input name="tanggal_selesai" class="date endDate form-input block w-full focus:bg-white" id="my-textfield" type="text" placeholder="Tanggal selesai penyetrikaan" required readonly x-bind:min="startDate" x-model="endDate" x-effect="setEndDate()">
+                    <input name="tanggal_selesai" class="date endDate form-input block w-full focus:bg-white" id="my-textfield" type="text" placeholder="Tanggal selesai penyetrikaan" required readonly x-bind:min="startDate" x-model="endDate" x-effect="setEndDate()" >
                     <p class="py-2 text-sm text-gray-600">*tanggal selesai setrika baju</p>
                 </div>
             </div>
@@ -274,7 +274,7 @@
 
         <!--Card-->
         <div class="p-8 mt-6 lg:mt-0 leading-normal rounded shadow bg-white">
-            <blockquote class="border-l-4 border-yellow-600 italic my-4 pl-8 md:pl-12">Periksa kembali data Anda sebelum "Konfirmasi", jika ada kesalahan silahkan kembali atau tekan "Ubah Data Pemesanan"</blockquote>
+            <blockquote class="border-l-4 border-yellow-600 italic my-4 pl-8 md:pl-12">Periksa kembali data Pelanggan sebelum "Konfirmasi", jika ada kesalahan silahkan kembali atau tekan "Ubah Data Pemesanan"</blockquote>
 
                 <div class="pt-8">
 
@@ -297,7 +297,7 @@
 
     <!--Back link -->
     <div class="w-full lg:w-4/5 lg:ml-auto text-base md:text-sm text-gray-600 px-4 py-24 mb-12">
-        <span class="text-base text-yellow-600 font-bold">&lt;</span> <a href="{{ route('booking') }}" class="text-base md:text-sm text-yellow-600 font-bold no-underline hover:underline">Back Home</a>
+        <span class="text-base text-yellow-600 font-bold">&lt;</span> <a href="{{ route('close-tab') }}" class="text-base md:text-sm text-yellow-600 font-bold no-underline hover:underline">Back Home</a>
     </div>
 
 </div>
